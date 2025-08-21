@@ -158,7 +158,7 @@ async def get_project_structure(request: GetProjectStructureRequest) -> list:
     """
     try:
         return await to_thread(
-            gitlab_functions.get_project_tree,
+            gitlab_functions.get_project_stucture,
             request.gitlab_url,
             request.private_token,
             request.project_path,
