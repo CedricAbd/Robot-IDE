@@ -6,15 +6,12 @@ class ParseRobotFrameworkFileRequest(BaseModel):
     """
     file_content: str = Field(..., description="File text content.")
 
-# ---------------------------------------------------------------------------
-# CPYTHON ERROR WHILE PACKAGING THE BACKEND AS AN EXECUTABLE WITH PYINSTALLER
-# ---------------------------------------------------------------------------
-# class CheckContentRequest(BaseModel):
-#     """
-#     Request model to check a Robot Framework file syntax.
-#     """
-#     file_name: str = Field(..., description="File name.")
-#     file_content: str = Field(..., description="File text content.")
+class CheckContentRequest(BaseModel):
+    """
+    Request model to check a Robot Framework file syntax.
+    """
+    file_name: str = Field(..., description="File name.")
+    file_content: str = Field(..., description="File text content.")
 
 class GetResourcesKeywordsRequest(BaseModel):
     """
