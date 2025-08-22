@@ -5,6 +5,6 @@ httpx==0.28.1
 pydantic==2.11.2
 python-gitlab==5.6.0
 robotframework==7.2
-robotframework-robocop==6.4.0
+robotframework-robocop==5.0.3
 pytest==8.4.1
 pytest-asyncio==1.1.0
