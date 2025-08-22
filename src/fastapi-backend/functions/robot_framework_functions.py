@@ -4,6 +4,7 @@ from pathlib import Path
 from logger import logger
 from robot.api import TestSuite
 from robot.libdocpkg import LibraryDocumentation
+from robocop import Robocop
 from robocop.config import Config
 from io import StringIO
 from contextlib import redirect_stdout
