@@ -234,7 +234,7 @@ def get_keywords_from_python(file_content: str) -> list:
     for node in ast.walk(tree):
         if isinstance(node, ast.FunctionDef) and not node.name.startswith("_"):
             args = [arg.arg for arg in node.args.args if arg.arg != "self"]
-            doc = ast.get_docstring(node) or ""
+            doc = (ast.get_docstring(node) or "").strip()
             keywords.append({
                 "name": format_robot_keyword(node.name),
                 "arguments": args,
