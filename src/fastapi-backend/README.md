@@ -19,7 +19,7 @@ pytest -v
 ```
 
 ### 4) Backend start
-Run the following commande to start the API:
+Run the following command to start the API:
 ```bash
 python3 main.py
 ```
