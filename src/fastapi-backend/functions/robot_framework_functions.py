@@ -1,15 +1,14 @@
-# from os.path import exists
-# from os import remove
-# from pathlib import Path
+from os.path import exists
+from os import remove
+from pathlib import Path
 from logger import logger
 from robot.api import TestSuite
 from robot.libdocpkg import LibraryDocumentation
-# from robocop.run import run_robocop
-# from robocop.config import Config
-# from io import StringIO
-# from contextlib import redirect_stdout
+from robocop.config import Config
+from io import StringIO
+from contextlib import redirect_stdout
 from functions.gitlab_functions import get_file_content
-# from tempfile import NamedTemporaryFile
+from tempfile import NamedTemporaryFile
 from exceptions import GenericError, GitlabHTTPAuthenticationError, GitlabHTTPNetworkError
 import ast
 import re
@@ -109,56 +108,52 @@ def parse_robot_framework_file(file_content: str) -> dict:
             f"robot_framework_functions.parse_robot_framework_file: {type(e).__name__} -> {e}"
         )
 
-# ---------------------------------------------------------------------------
-# CPYTHON ERROR WHILE PACKAGING THE BACKEND AS AN EXECUTABLE WITH PYINSTALLER
-# ---------------------------------------------------------------------------
-#
-#def check_content(file_name: str, file_content: str) -> list:
-#     """
-#     Performs a Robocop check on a Robot Framework file.
+def check_content(file_name: str, file_content: str) -> list:
+    """
+    Performs a Robocop check on a Robot Framework file.
 
-#     Args:
-#         file_name (str): File name.
-#         file_content (str): File text content.
+    Args:
+        file_name (str): File name.
+        file_content (str): File text content.
 
-#     Returns:
-#         list: List of Robocop messages.
+    Returns:
+        list: List of Robocop messages.
 
-#     Raises:
-#         GenericError: If any error happens.
-#     """
-#     robocop_messages = []
-#     robocop = Robocop(Config())
-#     robocop.config.format = "{severity}:{line}:{col}:{desc}"
-#     buffer = StringIO()
-#     temp_file_path = None
-#     try:
-#         suffix = Path(file_name).suffix
-#         with NamedTemporaryFile(mode="w", encoding="utf-8", suffix=suffix, delete=False) as temp_file:
-#             temp_file.write(file_content)
-#             temp_file_path = temp_file.name
-#         robocop.config.paths = [temp_file_path]
-#         with redirect_stdout(buffer):
-#             try:
-#                 robocop.run()
-#             except SystemExit:
-#                 pass
-#     except Exception as e:
-#             raise GenericError(
-#                 f"robot_framework_functions.check_content: {type(e).__name__} -> {e}"
-#             )
-#     finally:
-#         if temp_file_path and exists(temp_file_path):
-#             remove(temp_file_path)
-#     for message in buffer.getvalue().splitlines():
-#         severity, line, col, desc = message.strip().split(":", 3)
-#         robocop_messages.append({
-#             "message_severity": severity,
-#             "line_number": int(line),
-#             "column_number": int(col),
-#             "message_description": desc
-#         })
-#     return robocop_messages
+    Raises:
+        GenericError: If any error happens.
+    """
+    robocop_messages = []
+    robocop = Robocop(Config())
+    robocop.config.format = "{severity}:{line}:{col}:{desc}"
+    buffer = StringIO()
+    temp_file_path = None
+    try:
+        suffix = Path(file_name).suffix
+        with NamedTemporaryFile(mode="w", encoding="utf-8", suffix=suffix, delete=False) as temp_file:
+            temp_file.write(file_content)
+            temp_file_path = temp_file.name
+        robocop.config.paths = [temp_file_path]
+        with redirect_stdout(buffer):
+            try:
+                robocop.run()
+            except SystemExit:
+                pass
+    except Exception as e:
+            raise GenericError(
+                f"robot_framework_functions.check_content: {type(e).__name__} -> {e}"
+            )
+    finally:
+        if temp_file_path and exists(temp_file_path):
+            remove(temp_file_path)
+    for message in buffer.getvalue().splitlines():
+        severity, line, col, desc = message.strip().split(":", 3)
+        robocop_messages.append({
+            "message_severity": severity,
+            "line_number": int(line),
+            "column_number": int(col),
+            "message_description": desc
+        })
+    return robocop_messages
 
 async def get_resources_keywords(
     gitlab_url: str,
