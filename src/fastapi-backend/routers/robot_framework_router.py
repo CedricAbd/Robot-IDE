@@ -9,7 +9,7 @@ from exceptions import (
 )
 from models.robot_framework_models import (
     ParseRobotFrameworkFileRequest,
-    # CheckContentRequest,
+    CheckContentRequest,
     GetResourcesKeywordsRequest,
     GetLibrariesKeywordsRequest,
 )
@@ -39,32 +39,29 @@ async def parse_robot_framework_file(request: ParseRobotFrameworkFileRequest) ->
         logger.error(ge)
         raise HTTPException(status_code=500)
 
-# ---------------------------------------------------------------------------
-# CPYTHON ERROR WHILE PACKAGING THE BACKEND AS AN EXECUTABLE WITH PYINSTALLER
-# ---------------------------------------------------------------------------
-# @robot_framework_router.post("/check_content", tags=["Robot Framework routes"], status_code=200)
-# async def check_content(request: CheckContentRequest) -> list:
-#     """   
-#     Asynchronously checks a Robot Framework file content.
+@robot_framework_router.post("/check_content", tags=["Robot Framework routes"], status_code=200)
+async def check_content(request: CheckContentRequest) -> list:
+    """   
+    Asynchronously checks a Robot Framework file content.
 
-#     Args:
-#         request (CheckContentRequest): Parameters as an object.
+    Args:
+        request (CheckContentRequest): Parameters as an object.
 
-#     Returns:
-#         list: List of Robocop messages.
+    Returns:
+        list: List of Robocop messages.
 
-#     Raises:
-#         HTTPException: 500 error if any error happens.
-#     """
-#     try:
-#         return await to_thread(
-#             robot_framework_functions.check_content,
-#             request.file_name,
-#             request.file_content
-#         )
-#     except GenericError as ge:
-#         logger.error(ge)
-#         raise HTTPException(status_code=500)
+    Raises:
+        HTTPException: 500 error if any error happens.
+    """
+    try:
+        return await to_thread(
+            robot_framework_functions.check_content,
+            request.file_name,
+            request.file_content
+        )
+    except GenericError as ge:
+        logger.error(ge)
+        raise HTTPException(status_code=500)
 
 @robot_framework_router.post("/get_resources_keywords", tags=["Robot Framework routes"], status_code=200)
 async def get_resources_keywords(request: GetResourcesKeywordsRequest) -> list:
