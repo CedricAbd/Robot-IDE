@@ -4,12 +4,12 @@ import { RouterOutlet } from '@angular/router';
 import { MatIconRegistry } from '@angular/material/icon';
 
 import { BackendInteractionService } from './core/services/backend-interaction.service';
-import { FilesManagementService } from './editor/services/files-management.service';
+import { FilesManagementService } from './editors/services/files-management.service';
 import { DataPersistenceService } from './core/services/data-persistence.service';
-import { LanguageRegistrationService } from './editor/services/language-registration.service';
-import { ThemeDefinitionService } from './editor/services/theme-definition.service';
-import { KeywordsGatheringService } from './editor/services/keywords-gathering.service';
-import { AutocompletionSuggestionsService } from './editor/services/autocompletion-suggestions.service';
+import { LanguageRegistrationService } from './editors/services/language-registration.service';
+import { ThemeDefinitionService } from './editors/services/theme-definition.service';
+import { KeywordsGatheringService } from './editors/services/keywords-gathering.service';
+import { AutocompletionSuggestionsService } from './editors/services/autocompletion-suggestions.service';
 import { ApplicationShortcutsService } from './core/services/application-shortcuts.service';
 
 /**
