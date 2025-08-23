@@ -17,6 +17,6 @@ export class LanguageRegistrationService {
    */
   constructor() {
     languages.register({ id: 'robot-framework' });
-    languages.setMonarchTokensProvider('robot-framework', monarchLanguage)
+    languages.setMonarchTokensProvider('robot-framework', monarchLanguage);
   }
 }
