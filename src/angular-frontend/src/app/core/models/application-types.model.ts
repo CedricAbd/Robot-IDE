@@ -94,3 +94,12 @@ export type ExecutableTest = {
     path: string,
     tags: string[]
 }
+
+/**
+ * Represents a text template in the application.
+ */
+export type Template = {
+  name: string;
+  content: string;
+  new_line: boolean;
+}
