@@ -91,7 +91,7 @@ export class EditorPanelComponent implements AfterViewInit, OnDestroy {
   /**
    * Changes selected file for this editor.
    * 
-   * @param index - index of the file to select in the _openFiles reactive array.
+   * @param index - Index of the file to select in the _openFiles reactive array.
    */
   public selectTab(index: number): void {
     this._editorsStateService.setSelectedFile(this.editorIndex, this._filesManagementService.openFiles[index])
@@ -100,7 +100,7 @@ export class EditorPanelComponent implements AfterViewInit, OnDestroy {
   /**
    * Closes a file in FilesManagementService using its index.
    * 
-   * @param index - The index of the file to close in the _openFiles reactive array.
+   * @param index - Index of the file to close in the _openFiles reactive array.
    */
   public close(index: number): void {
     const fileToClose = this._filesManagementService.openFiles[index];
