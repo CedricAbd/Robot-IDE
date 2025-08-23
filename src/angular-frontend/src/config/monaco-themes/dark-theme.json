@@ -1,0 +1,17 @@
+{
+    "name": "dark-theme",
+    "base": "vs-dark",
+    "rules": [
+        { "token": "comment", "foreground": "6A9955" },
+        { "token": "section", "foreground": "4EC9B0", "fontstyle": "bold" },
+        { "token": "identifier", "foreground": "DCDCAA" },
+        { "token": "property", "foreground": "569CD6" },
+        { "token": "statement", "foreground": "C586C0" },
+        { "token": "variable", "foreground": "9CDCFE" },
+        { "token": "boolean", "foreground": "569CD6" },
+        { "token": "string", "foreground": "CE9178" }
+    ],
+    "colors": {
+        "editorSuggestWidget.selectedBackground": "#333366"
+    }
+}
