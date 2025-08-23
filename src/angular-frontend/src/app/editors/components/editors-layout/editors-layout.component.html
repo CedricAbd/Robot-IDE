@@ -1,0 +1,25 @@
+<!--
+    File: editors-layout.component.html
+    Component: EditorsLayoutComponent
+    Description: This HTML file renders editors layout with its sidebar and editor panels.
+    Usage: { path: 'editor', component: EditorsLayoutComponent } in app.routes.ts
+-->
+
+<!-- Renders the editors layout container. -->
+<mat-sidenav-container class="editors-layout">
+    <!-- Renders the expandable sidebar. -->
+    <mat-sidenav mode="side" [opened]="isSidebarOpen$ | async">
+        <app-sidebar></app-sidebar>
+    </mat-sidenav>
+    <!-- Renders the editor panels. -->
+    <mat-sidenav-content
+        class="editor-panels"
+        *ngIf="(editorsCount$ | async) as editorsCount"
+        [ngClass]="'editors-count-' + editorsCount"
+    >
+        <app-editor-panel class="editor-panel" *ngIf="editorsCount >= 1" [editorIndex]="0"></app-editor-panel>
+        <app-editor-panel class="editor-panel" *ngIf="editorsCount >= 2" [editorIndex]="1"></app-editor-panel>
+        <app-editor-panel class="editor-panel" *ngIf="editorsCount >= 3" [editorIndex]="2"></app-editor-panel>
+        <app-editor-panel class="editor-panel" *ngIf="editorsCount >= 4" [editorIndex]="3"></app-editor-panel>
+    </mat-sidenav-content>
+</mat-sidenav-container>
