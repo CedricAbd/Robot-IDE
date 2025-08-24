@@ -43,13 +43,31 @@ npx ng generate --help
 
 ## Building
 
-To build the project run:
+To build the project run from the angular-frontend directory:
+
+```bash
+rm -rf ./angular
+```
+
+```bash
+rm -rf ./dist
+```
 
 ```bash
 npx ng build
 ```
 
 This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+
+## Start server
+
+To start the built application in a web server, run:
+
+```bash
+npx serve -s dist/angular-frontend/browser -l 4200
+```
+
+Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
 
 ## Application routes
 
