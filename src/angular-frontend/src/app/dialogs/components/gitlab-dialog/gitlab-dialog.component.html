@@ -1,0 +1,45 @@
+<!-- Renders different titles depending on the mode. -->
+<h2
+    align="center"
+>
+    {{ mode === 'open' ? 'Open file from GitLab' : 'Save file on GitLab' }}
+</h2>
+<mat-dialog-content>
+    <span class="panel-bar-container">
+        <!-- Renders a text field to input a path. -->
+        <input
+            type="text"
+            class="panel-searchbar"
+            [(ngModel)]="filePath"
+            [placeholder]="mode === 'open' ? 'Access a file by using its path...' : 'Save file at path...'"
+            list="gitlab-suggestions"
+        >
+    </span>
+    <!-- Handles paths suggestions. -->
+    <datalist id="gitlab-suggestions">
+        <option *ngFor="let p of pathsSuggestions" [value]="p"></option>
+    </datalist>
+    <!-- Displays an error message if an error happens. -->
+    <div *ngIf="errorMessage" class="error-message" align="center">
+        {{ errorMessage }}
+    </div>
+    <mat-dialog-actions align="center">
+        <!-- Renders the cancel button. -->
+        <button
+            mat-button
+            class="dialog-button"
+            (click)="onCancel()"
+        >
+            Cancel
+        </button>
+        <!-- Renders the confirm button. -->
+        <button
+            mat-button
+            class="dialog-button"
+            [disabled]="!filePath.trim()"
+            (click)="onConfirm()"
+        >
+            Confirm
+        </button>
+    </mat-dialog-actions>
+</mat-dialog-content>
