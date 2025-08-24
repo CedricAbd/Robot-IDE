@@ -1,0 +1,212 @@
+/* Default dark theme. */
+:root {
+    --background-color: #1E1E1E;
+    --text-color: #CCCCCC;
+    --panels-color: #181818;
+    --items-color: #9575CD;
+    --hover-color: #343434;
+}
+
+/* Light theme. */
+body.light-theme {
+    --background-color: #FFFFFF;
+    --text-color: #343434;
+    --panels-color: #F1F1F1;
+    --hover-color: #D8D8D8;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-color);
+}
+
+/* Menubar. */
+.menubar {
+    background-color: var(--panels-color) !important;
+    color: var(--text-color);
+    border-bottom: solid 0.1px var(--hover-color);
+}
+
+.menubar-menu {
+    background-color: var(--panels-color) !important;
+    border-radius: 2rem;
+    border-left: 0.5px solid var(--hover-color);
+    border-right: 0.5px solid var(--hover-color);
+    border-bottom: 0.5px solid var(--hover-color);
+    margin-top: 0.8rem;
+}
+
+.menubar-menu .mat-mdc-menu-item:hover {
+    background-color: var(--hover-color) !important;
+}
+
+.menubar-menu .menubar-divider {
+    border-top: 0.5px solid var(--hover-color) !important;
+}
+
+.menubar-button:hover {
+    background-color: var(--hover-color);
+}
+
+.menubar-button.selected mat-icon {
+    color: var(--items-color);
+}
+
+.menubar-button:disabled:not(.selected) mat-icon {
+    opacity: 0.38;
+}
+
+/* Editors layout. */
+.editors-layout mat-sidenav {
+    background-color: var(--panels-color);
+    border-right: 0.5px solid var(--hover-color);
+}
+
+/* Sidebar. */
+.sidebar-buttons {
+    border-right: solid 0.1px var(--hover-color);
+}
+
+.sidebar-button:hover {
+    background-color: var(--hover-color);
+}
+
+.sidebar-button.active mat-icon {
+    color: var(--items-color);
+}
+
+/* Tooltips. */
+.mat-mdc-tooltip {
+    background-color: var(--hover-color);
+    border-radius: 2rem;
+}
+
+/* File tabs. */
+.file-tabs .mdc-tab-indicator__content--underline {
+    border: solid 0.15rem var(--items-color) !important;
+}
+
+.file-tabs .mdc-tab:not(.mdc-tab-indicator--active) {
+    background-color: var(--panels-color);
+}
+
+.file-tabs .mdc-tab .mdc-ripple-surface {
+    color: red !important;
+}
+
+/* Error messages. */
+.error-message {
+    color: red;
+}
+
+/* Sidebar panels. */
+.panel-bar-button.mat-mdc-icon-button {
+    color: var(--text-color);
+    border: 0.1rem solid var(--text-color);
+}
+
+.panel-searchbar, .dialog-field {
+    background: transparent;
+    color: var(--text-color);
+    border: 0.1rem solid var(--text-color);
+}
+
+/* Sidebar panels list. */
+.panel-item.mat-mdc-list-item:hover {
+    background-color: var(--hover-color);
+}
+
+.panel-item.mat-mdc-list-item:active {
+    background-color: var(--items-color);
+}
+
+.panel-odd-item.mat-mdc-list-item {
+    background-color: var(--panels-color);
+}
+
+.panel-even-item.mat-mdc-list-item {
+    background-color: var(--background-color);
+}
+
+.panel-list-item-secondary-label {
+    color: var(--items-color);
+}
+
+.panel-items-count {
+    background-color: var(--background-color) !important;
+    color: var(--text-color);
+}
+
+/** Project panel. **/
+.expand-toggle {
+    background: transparent;
+    color: var(--items-color);
+    border: none;
+}
+
+.expand-toggle:active {
+    color: white;
+}
+
+.tree-node:hover {
+    background-color: var(--hover-color);
+}
+
+.tree-node:active {
+    background-color: var(--items-color);
+    color: white;
+}
+
+/* Dialogs. */
+.dialog .mat-mdc-dialog-container {
+    --mdc-dialog-supporting-text-color: var(--text-color);
+    --mdc-dialog-container-color: var(--background-color);
+    color: var(--text-color);
+    border: 1px solid var(--hover-color);
+}
+
+.dialog-button {
+    background: var(--background-color) !important;
+    color: var(--text-color) !important;
+    border: 1px solid var(--hover-color) !important;
+}
+
+.dialog-button:disabled {
+    background-color: var(--hover-color);
+}
+
+.dialog-button:hover {
+    background-color: var(--items-color) !important;
+    color: #FFFFFF !important;
+    border: 1px solid transparent !important;
+}
+
+/* Selector. */
+.list-selector {
+    border: 0.5px solid var(--hover-color);
+}
+
+.mat-mdc-select-panel {
+    background-color: var(--panels-color) !important;
+    border-left: 1px solid var(--hover-color) !important;
+    border-right: 1px solid var(--hover-color) !important;
+    border-bottom: 1px solid var(--hover-color) !important;
+}
+
+.mat-mdc-select-panel .mat-mdc-option:not(:last-child) {
+    border-bottom: 0.5px solid var(--hover-color);
+}
+
+/* Levels. */
+mat-tree-node.even-level {
+    background-color: var(--panels-color);
+}
+
+mat-tree-node.odd-level {
+    background-color: var(--background-color);
+}
+
+mat-tree-node.even-level .tree-node-content,
+mat-tree-node.odd-level .tree-node-content {
+    background-color: transparent;
+}
