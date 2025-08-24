@@ -1,0 +1,41 @@
+<h2
+    align="center"
+>
+    Add new template
+</h2>
+<mat-dialog-content>
+    <div class="panel-bar-container">
+        <!-- Renders a text field to input the new template name. -->
+        <input
+            type="text"
+            class="panel-searchbar"
+            [(ngModel)]="name"
+            placeholder="New template name..."
+        >
+    </div>
+    <!-- Renders a checkbox to specify that the insertion should start with a new line. -->
+    <mat-checkbox
+        [(ngModel)]="newLine"
+    >
+        Add line break before insertion?
+    </mat-checkbox>
+    <mat-dialog-actions align="center">
+        <!-- Renders the cancel button. -->
+        <button
+            mat-button
+            class="dialog-button"
+            (click)="onCancel()"
+        >
+            Cancel
+        </button>
+        <!-- Renders the confirm button. -->
+        <button
+            mat-button
+            class="dialog-button"
+            [disabled]="!name.trim()"
+            (click)="onConfirm()"
+        >
+            Confirm
+        </button>
+    </mat-dialog-actions>
+</mat-dialog-content>
