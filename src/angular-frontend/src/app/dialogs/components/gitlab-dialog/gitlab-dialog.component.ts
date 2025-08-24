@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { MatDialog, MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 import { StructureFetchingService } from '../../../editor/services/structure-fetching.service';
 import { LastInteractionService } from '../../../editor/services/last-interaction.service';
-import { FileManagerService } from '../../../editor/services/file-manager.service';
+import { FilesManagementService } from '../../../editors/services/files-management.service';
 import { BackendInteractionService } from '../../../core/services/backend-interaction.service';
 import { RobotFile } from '../../../editor/models/robot-file.class';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
@@ -42,7 +42,7 @@ export class GitlabDialogComponent {
    * @param _structureFetchingService - Periodically fetches current project structure.
    * @param _lastInteractionService - Tracks last interacted editor and file.
    * @param _backendInteractionService - Handles backend interactions.
-   * @param _fileManagementService - Manages files in the application.
+   * @param _filesManagementService - Manages files in the application.
    */
   constructor(
     @Inject(MAT_DIALOG_DATA) public mode: 'open' | 'save',
@@ -51,7 +51,7 @@ export class GitlabDialogComponent {
     private _structureFetchingService: StructureFetchingService,
     private _lastInteractionService: LastInteractionService,
     private _backendInteractionService: BackendInteractionService,
-    private _fileManagementService: FileManagerService
+    private _filesManagementService: FilesManagementService
   ) {
     const rawPaths = this._structureFetchingService.fetchedStructure.filter(node =>
       node.type === (this.mode === 'open' ? 'blob' : 'tree')
@@ -87,7 +87,7 @@ export class GitlabDialogComponent {
     if (this.mode === 'open') {
       try {
         const content = await this._backendInteractionService.getFileContent(this.filePath)
-        this._fileManagementService.open(new RobotFile(
+        this._filesManagementService.open(new RobotFile(
           Date.now(),
           this.filePath.split('/').pop()!,
           content
