@@ -191,7 +191,7 @@ export class BackendInteractionService {
           project_path: this._gitlabStateService.projectPath
         }
       );
-    } catch (error: unknown) { throw error; };
+    } catch { return []; };
   }
 
   /**
