@@ -1,0 +1,31 @@
+<h2
+    align="center"
+>
+    Please confirm
+</h2>
+<!-- Displays the information message. -->
+<mat-dialog-content
+    align="center"
+>
+    {{ message }}
+</mat-dialog-content>
+<mat-dialog-actions
+    align="center"
+>
+    <!-- Renders the cancel button. -->
+    <button
+        mat-button
+        class="dialog-button"
+        (click)="onCancel()"
+    >
+        Cancel
+    </button>
+    <!-- Renders the Save (push) button. -->
+    <button
+        mat-button
+        class="dialog-button"
+        (click)="onConfirm()"
+    >
+        Save (push)
+    </button>
+</mat-dialog-actions>
