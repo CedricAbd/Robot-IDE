@@ -2,11 +2,11 @@ import { Component, Inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { MatDialog, MatDialogModule, MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
-import { StructureFetchingService } from '../../../editor/services/structure-fetching.service';
-import { LastInteractionService } from '../../../editor/services/last-interaction.service';
+import { StructureFetchingService } from '../../../editors/services/structure-fetching.service';
+import { LastInteractionService } from '../../../editors/services/last-interaction.service';
 import { FilesManagementService } from '../../../editors/services/files-management.service';
 import { BackendInteractionService } from '../../../core/services/backend-interaction.service';
-import { RobotFile } from '../../../editor/models/robot-file.class';
+import { RobotFile } from '../../../editors/models/robot-file.class';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 
 /**
