@@ -1,0 +1,196 @@
+<!-- Renders the menubar. -->
+<mat-toolbar class="menubar">
+    <!-- Renders the 'Sidebar' button. -->
+    <button
+        mat-icon-button
+        class="menubar-button"
+        [disabled]="router.url === '/runner' || router.url === '/settings'"
+        (click)="toggleSidebar()"
+        [matTooltip]="(isSidebarOpen$ | async) ? 'Hide sidebar' : 'Show sidebar'"
+    >
+        <mat-icon>menu</mat-icon>
+    </button>
+
+    <!-- Defines the 'File' menu content. -->
+    <mat-menu class="menubar-menu" #fileMenu="matMenu">
+        <!-- Renders the 'New file' button. -->
+        <button
+            mat-menu-item
+            (click)="newFile()"
+        >
+            <span>New file</span>
+            <span class="menubar-shortcut">Ctrl+Alt+N</span>
+        </button>
+        <!-- Renders a divider. -->
+        <mat-divider class="menubar-divider"></mat-divider>
+        <!-- Renders the 'Open local file...' button. -->
+        <button
+            mat-menu-item
+            (click)="openLocalFile()"
+        >
+            <span>Open local file...</span>
+            <span class="menubar-shortcut">Ctrl+O</span>
+        </button>
+        <!-- Renders the 'Save local file...' button. -->
+        <button
+            mat-menu-item
+            (click)="saveLocalFile()"
+        >
+            <span>Save local file...</span>
+            <span class="menubar-shortcut">Ctrl+S</span>
+        </button>
+        <!-- Renders a divider. -->
+        <mat-divider class="menubar-divider"></mat-divider>
+        <!-- Renders the 'Open GitLab file...' button. -->
+        <button
+            mat-menu-item
+            (click)="openGitlabFile()"
+        >
+            <span>Open GitLab file...</span>
+            <span class="menubar-shortcut">Ctrl+Alt+O</span>
+        </button>
+        <!-- Renders the 'Save file on GitLab...' button. -->
+        <button
+            mat-menu-item
+            (click)="saveFileOnGitlab()"
+        >
+            <span>Save file on GitLab...</span>
+            <span class="menubar-shortcut">Ctrl+Alt+S</span>
+        </button>
+    </mat-menu>
+
+    <!-- Renders the 'File' menu button. -->
+    <button
+        mat-icon-button
+        class="menubar-button"
+        [disabled]="router.url === '/runner' || router.url === '/settings'"
+        [matMenuTriggerFor]="fileMenu"
+        matTooltip="File"
+    >
+        <mat-icon>insert_drive_file</mat-icon>
+    </button>
+
+    <!-- Defines the 'Edit' menu content. -->
+    <mat-menu class="menubar-menu" #editMenu="matMenu">
+        <!-- Renders the 'Undo' button. -->
+        <button
+            mat-menu-item
+            (click)="undo()"
+        >
+            <span>Undo</span>
+            <span class="menubar-shortcut">Ctrl+Z</span>
+        </button>
+        <!-- Renders the 'Redo' button. -->
+        <button
+            mat-menu-item
+            (click)="redo()"
+        >
+            <span>Redo</span>
+            <span class="menubar-shortcut">Ctrl+Y</span>
+        </button>
+        <!-- Renders a divider. -->
+        <mat-divider class="menubar-divider"></mat-divider>
+        <!-- Renders the 'Find' button. -->
+        <button
+            mat-menu-item
+            (click)="find()"
+        >
+            <span>Find</span>
+            <span class="menubar-shortcut">Ctrl+F</span>
+        </button>
+        <!-- Renders the 'Replace' button. -->
+        <button
+            mat-menu-item
+            (click)="replace()"
+        >
+            <span>Replace</span>
+            <span class="menubar-shortcut">Ctrl+H</span>
+        </button>
+        <mat-divider class="menubar-divider"></mat-divider>
+        <!-- Renders the 'Save selection as template' button. -->
+        <button
+            mat-menu-item
+            (click)="saveSelectionAsTemplate()"
+        >
+            <span>Save selection as template</span>
+            <span class="menubar-shortcut">Ctrl+P</span>
+        </button>
+    </mat-menu>
+ 
+    <!-- Renders the 'Edit' menu button. -->
+    <button
+        mat-icon-button
+        class="menubar-button"
+        [disabled]="router.url === '/runner' || router.url === '/settings'"
+        [matMenuTriggerFor]="editMenu"
+        matTooltip="Edit"
+    >
+        <mat-icon>edit</mat-icon>
+    </button>
+
+    <!-- Renders the 'Editors' button. -->
+    <button
+        mat-icon-button
+        class="menubar-button"
+        [class.selected]="router.url === '/editor'"
+        [disabled]="router.url === '/editor'"
+        (click)="router.navigateByUrl('/editor')"
+        matTooltip="Editor"
+    >
+        <mat-icon>code</mat-icon>
+    </button>
+
+    <!-- Renders the 'Runner' button. -->
+    <button
+        mat-icon-button
+        class="menubar-button"
+        [class.selected]="router.url === '/runner'"
+        [disabled]="router.url === '/runner'"
+        (click)="router.navigateByUrl('/runner')"
+        matTooltip="Runner"
+    >
+        <mat-icon>play_arrow</mat-icon>
+    </button>
+
+    <!-- Splits the menubar in two buttons areas. -->
+    <span class="menubar-spacer"></span>
+
+    <!-- Renders the GitLab branch selector. -->
+    <mat-select
+        class="list-selector"
+        placeholder="GitLab branch..."
+        (selectionChange)="selectBranch($event.value)"
+    >
+        <mat-option
+            *ngFor="let branch of branchesList"
+            [value]="branch"
+        >
+            {{ branch }}
+        </mat-option>
+    </mat-select>
+
+    <!-- Renders the 'Split' button. -->
+    <button
+        mat-icon-button
+        class="menubar-button"
+        [disabled]="router.url === '/runner' || router.url === '/settings' || (openFiles$ | async)?.length === 0"
+        [matTooltip]=
+            "((editorsCount$ | async) ?? 1) < 4
+                ? 'Split in ' + (((editorsCount$ | async) ?? 1) + 1) + ' editors'
+                : 'Unsplit editors'
+            "
+        (click)="toggleSplit()"
+    >
+        <mat-icon>vertical_split</mat-icon>
+    </button>
+
+    <!-- Renders the 'Theme' button. -->
+    <button
+        mat-icon-button
+        class="menubar-button"
+        (click)="switchTheme()"
+        [matTooltip]="(isThemeLight$ | async) ? 'Switch to dark theme' : 'Switch to light theme'"
+    >
+        <mat-icon>{{ (isThemeLight$ | async) ? 'dark_mode' : 'light_mode' }}</mat-icon>
+    </button>
+</mat-toolbar>
