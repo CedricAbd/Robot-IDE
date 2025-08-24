@@ -1,0 +1,49 @@
+<h2 class="panel-title">Project explorer</h2>
+<!-- Displays the name of the current project. -->
+<div class="panel-items-count">{{ projectName }}</div>
+<!-- Renders the GitLab project tree structure. -->
+<mat-tree
+    class="project-tree"
+    [dataSource]="dataSource"
+    [treeControl]="flatTreeControl"
+>
+    <!-- Renders a tree node that represents a directory. -->
+    <mat-tree-node
+        *matTreeNodeDef="let node; when: hasChild"
+        matTreeNodePadding
+        [matTreeNodePaddingIndent]="getIndent(node)"
+        class="tree-node"
+        [ngClass]="{ 'odd-level': node.level % 2 === 1, 'even-level': node.level % 2 === 0 }"
+        [matTooltip]="node.path"
+        matTooltipPosition="right"
+    >
+        <div class="tree-node-content">
+            <button
+                mat-icon-button
+                matTreeNodeToggle
+                class="expand-toggle"
+            >
+                <mat-icon>
+                    {{ flatTreeControl.isExpanded(node) ? 'expand_more' : 'chevron_right' }}
+                </mat-icon>
+            </button>
+            {{ node.name }}
+        </div>
+    </mat-tree-node>
+    <!-- Renders a tree node that represents a file. -->
+    <mat-tree-node
+        *matTreeNodeDef="let node"
+        matTreeNodePadding
+        [matTreeNodePaddingIndent]="getIndent(node)"
+        class="tree-node"
+        [ngClass]="{ 'odd-level': node.level % 2 === 1, 'even-level': node.level % 2 === 0 }"
+        [matTooltip]="node.path"
+        matTooltipPosition="right"
+        (click)="openFile(node)"
+    >
+        <div class="tree-node-content">
+            <mat-icon class="icon" [style.color]="getIcon(node).color">{{ getIcon(node).icon }}</mat-icon>
+            {{ node.name }}
+        </div>
+    </mat-tree-node>
+</mat-tree>
