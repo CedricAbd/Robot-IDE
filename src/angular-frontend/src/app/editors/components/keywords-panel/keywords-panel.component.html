@@ -1,0 +1,46 @@
+<!-- Displays panel's name. -->
+<h2 class="panel-title">Keywords finder</h2>
+<!-- Renders found keywords. -->
+<ng-container *ngIf="displayedKeywords$ | async as displayedKeywords">
+    <!-- Displays found keywords count. -->
+    <div class="panel-items-count">({{ displayedKeywords.length }}) keywords found</div>
+    <!-- Contains the keywords searchbar and the search mode button. -->
+    <div class="panel-bar-container">
+        <!-- Renders the keywords searchbar. -->
+        <input
+            type="text"
+            class="panel-searchbar"
+            [formControl]="formControl"
+            [placeholder]="(isDocumentationSearch$ | async) ? 'Filter keywords by documentation...' : 'Filter keywords by name...'"
+        >
+        <!-- Renders the search mode button. -->
+        <button
+            mat-icon-button
+            class="panel-bar-button"
+            [matTooltip]="(isDocumentationSearch$ | async) ? 'Search by name' : 'Search by documentation'"
+            matTooltipPosition="right"
+            (click)="changeSearchMode()"
+        >
+            <mat-icon>{{ (isDocumentationSearch$ | async) ? 'text_format' : 'description' }}</mat-icon>
+        </button>
+    </div>
+    <!-- Displays keywords list. -->
+    <mat-list class="panel-list">
+        <!-- Renders a found keyword. -->
+        <mat-list-item
+            *ngFor="let keyword of displayedKeywords; let i = index"
+            [ngClass]="['panel-item', i % 2 === 0 ? 'panel-even-item' : 'panel-odd-item']"
+            [matTooltip]="keyword.documentation"
+            matTooltipPosition="right"
+            (dblclick)="insertKeyword(keyword)"
+        >
+            <div class="panel-list-item-primary-label">{{ keyword.name }}</div>
+            <div
+                *ngIf="keyword.arguments?.length"
+                class="panel-list-item-secondary-label"
+            >
+                {{ keyword.arguments.join('    ') }}
+            </div>
+        </mat-list-item>
+    </mat-list>
+</ng-container>
