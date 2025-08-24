@@ -8,11 +8,11 @@ import { ResourcesPanelComponent } from "../../editors/components/resources-pane
  * Represents the possible sidebar panels in the editors layout.
  */
 export type SidebarPanel =
-    | typeof ProjectPanelComponent
-    | typeof StructurePanelComponent
-    | typeof TemplatesPanelComponent
-    | typeof KeywordsPanelComponent
-    | typeof ResourcesPanelComponent
+  | typeof ProjectPanelComponent
+  | typeof StructurePanelComponent
+  | typeof TemplatesPanelComponent
+  | typeof KeywordsPanelComponent
+  | typeof ResourcesPanelComponent
 
 /**
  * Represents the number of editors currently opened in the edition area.
@@ -90,9 +90,9 @@ export type ProjectStructure = {
  * Represents a test that can be executed from GitLab.
  */
 export type ExecutableTest = {
-    name: string,
-    path: string,
-    tags: string[]
+  name: string,
+  path: string,
+  tags: string[]
 }
 
 /**
@@ -102,4 +102,14 @@ export type Template = {
   name: string;
   content: string;
   new_line: boolean;
+}
+
+/**
+ * Represents a project structure tree node.
+ */
+export type TreeNode = {
+  name: string;
+  path: string;
+  type: 'tree' | 'blob';
+  level: number;
 }
