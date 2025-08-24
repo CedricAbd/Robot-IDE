@@ -26,7 +26,9 @@ if (!app.requestSingleInstanceLock()) {
  * Runs src/fastapi-backend/main.py
  */
 const createBackend = () => {
-    const backendDirectory = path.join(__dirname, 'src', 'fastapi-backend');
+    const backendDirectory = app.isPackaged
+        ? path.join(process.resourcesPath, 'fastapi-backend')
+        : path.join(__dirname, 'src', 'fastapi-backend');
     backendProcess = spawn('python3', ['main.py'], {
         cwd: backendDirectory,
         stdio: 'ignore'
