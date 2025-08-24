@@ -1,0 +1,48 @@
+:host {
+    display: flex;
+    flex-direction: row;
+    height: 95%;
+    cursor: pointer;
+    user-select: none;
+}
+
+.tests-list {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    flex: 0 0 70%;
+    border-right: 0.1rem solid var(--hover-color);
+}
+
+.tests-execution {
+    flex: 0 0 30%;
+    background-color: var(--panels-color);
+}
+
+.spinner-container {
+    flex: 0 0 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.panel-spinner {
+    stroke: var(--items-color) !important;
+}
+
+.panel-list {
+    padding-top: 0 !important;
+    flex: 1 1 auto;
+    overflow-y: auto;
+}
+
+mat-checkbox {
+    width: 100%;
+    border-bottom: 0.1rem solid var(--hover-color);
+}
+
+.background {
+    background-color: var(--panels-color);
+}

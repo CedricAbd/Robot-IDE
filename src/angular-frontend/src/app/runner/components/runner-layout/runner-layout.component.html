@@ -1,0 +1,57 @@
+<!-- Displays the list of executable tests only if they are not loading. -->
+<div class="tests-list" *ngIf="!isLoading">
+    <div class="background">
+        <h2 class="panel-title">Project's executable tests</h2>
+            <div class="panel-bar-container">
+                <!-- Renders a text field to enable executable tests search. -->
+                <input
+                    type="text"
+                    class="panel-searchbar"
+                    placeholder="Filter project's .robot tests..."
+                    [formControl]="formControl"
+                >
+            </div>
+            <!-- Renders the select all button. -->
+            <mat-checkbox
+                (change)="toggleSelectAll($event.checked, list)"
+            >
+                Select all
+            </mat-checkbox>
+    </div>
+    <!-- Displays a message if no executable tests were found. -->
+    <p
+        class="panel-items-count"
+        *ngIf="!displayedTests.length"
+    >
+        No executable tests were found for this specific branch
+    </p>
+    <!-- Renders the executable tests list. -->
+    <mat-selection-list
+        #list
+        class="panel-list"
+        (selectionChange)="onSelectionChange(list.selectedOptions.selected)"
+    >
+        <mat-list-option
+            *ngFor="let test of displayedTests; let i = index"
+            checkboxPosition="before"
+            [value]="test"
+            [ngClass]="['panel-item', i % 2 === 0 ? 'panel-even-item' : 'panel-odd-item']"
+        >
+            <div class="panel-list-item-primary-label">{{ test.name }}</div>
+            <div class="panel-list-item-secondary-label">{{ test.path }}</div>
+        </mat-list-option>
+    </mat-selection-list>
+</div>
+<!-- Renders a spinner if executable tests are loading. -->
+<div class="spinner-container" *ngIf="isLoading">
+    <mat-spinner class="panel-spinner"></mat-spinner>
+    <p class="panel-items-count">Searching for executable .robot files...</p>
+</div>
+<!-- Renders the tests execution area. -->
+<div class="tests-execution">
+    <h2 class="panel-title">Tests execution</h2>
+    <!-- Renders the tests execution button. -->
+    <button class="dialog-button" align="center">
+        Execute test(s)
+    </button>
+</div>
