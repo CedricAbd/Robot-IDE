@@ -311,4 +311,57 @@ export class BackendInteractionService {
       );
     } catch (error) { throw error; };
   }
+
+  /**
+   * Scans a sepecified list of projects to search for Robot Framework files.
+   * 
+   * @param projectsToScan - Projects to scan for .robot and .resource files.
+   */
+  public async getRepositoryRobotFiles(
+    projectsToScan: string[]
+  ): Promise<{
+    data: Record<string, Record<string, { project_path: string, path: string }[]>>;
+    errors: Record<string, string>
+  }> {
+    try {
+      return await this.post(
+        '/get_repository_robot_files', {
+          gitlab_url: this._gitlabStateService.gitlabUrl,
+          private_token: this._gitlabStateService.privateToken,
+          project_paths: projectsToScan
+        }
+      );
+    } catch (error: unknown) {
+      throw error;
+    }
+  }
+
+  /**
+   * Gets a file content and enables project and branch selection.
+   * 
+   * @param projectPath - Path to the GitLab project.
+   * @param branchName - Name of the project branch.
+   * @param filePath - Path to the file to open.
+   * @returns File content.
+   */
+  public async getFileContentFrom(
+    projectPath: string,
+    branchName: string,
+    filePath: string
+  ): Promise<string> {
+    try {
+      return await this.post<string>(
+        '/get_file_content',
+        {
+          gitlab_url: this._gitlabStateService.gitlabUrl,
+          private_token: this._gitlabStateService.privateToken,
+          project_path: projectPath,
+          branch_name: branchName,
+          file_path: filePath
+        }
+      );
+    } catch {
+      return 'Unable to properly open this file.'
+    }
+  }
 }
