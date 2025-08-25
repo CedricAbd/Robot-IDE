@@ -75,6 +75,19 @@ body {
     color: var(--items-color);
 }
 
+/* Structure panel. */
+.section {
+  color: var(--items-color)
+}
+
+.section mat-icon {
+  color: var(--items-color)
+}
+
+.tree li::before {
+    color: var(--items-color);
+}
+
 /* Tooltips. */
 .mat-mdc-tooltip {
     background-color: var(--hover-color);

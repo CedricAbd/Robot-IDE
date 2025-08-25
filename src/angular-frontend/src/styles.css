@@ -182,7 +182,7 @@ app-keywords-panel, app-resources-panel {
     font-style: italic;
 }
 
-/** Project panel. **/
+/* Project panel. */
 .project-tree {
     flex: 1 1 auto;
     min-height: 0;
@@ -195,6 +195,48 @@ app-keywords-panel, app-resources-panel {
     align-items: center;
     gap: 0.4rem;
     margin-left: 1rem;
+}
+
+/* Structure panel. */
+.structure-content {
+    flex: 1 1 auto;
+    min-height: 0;
+    overflow-y: auto;
+}
+
+.section {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 1rem 1rem 0.2rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.section mat-icon {
+    font-size: 1rem;
+    line-height: 1;
+    vertical-align: middle;
+    display: inline-flex;
+    align-items: center;
+}
+
+.tree {
+    list-style: none;
+    margin: 0;
+}
+
+.tree li {
+    padding: 0.2rem 0;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.tree li::before {
+    content: ">";
+    font-weight: bold;
+    padding-right: 0.5rem;
 }
 
 /* Dialogs. */
