@@ -39,6 +39,16 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
     direction: ltr;
 }
 
+/* Chromium scrollbars. */
+::-webkit-scrollbar {
+    width: 0.2rem;
+    height: 0.5rem;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 1rem;
+}
+
 /* Menubar */
 .menubar {
     display: flex;

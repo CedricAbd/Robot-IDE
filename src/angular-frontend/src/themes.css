@@ -20,6 +20,15 @@ body {
     color: var(--text-color);
 }
 
+/* Chromium scrollbars. */
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--hover-color);
+}
+
 /* Menubar. */
 .menubar {
     background-color: var(--panels-color) !important;
