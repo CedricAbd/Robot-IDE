@@ -364,4 +364,23 @@ export class BackendInteractionService {
       return 'Unable to properly open this file.'
     }
   }
+
+  /**
+   * Performs a Robocop check to verify the syntax of a Robot Framework file.
+   * 
+   * @param fileName - Name of the file to check.
+   * @param fileContent - Content of the file to check.
+   * @returns Robocop messages.
+   */
+  public async checkContent(fileName: string, fileContent: string): Promise<Array<{
+    message_severity:string;
+    line_number: number;
+    column_number: number;
+    message_description: string;
+  }>> {
+    return await this.post('/check_content', {
+      file_name: fileName,
+      file_content: fileContent
+    });
+  }
 }

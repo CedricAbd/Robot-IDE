@@ -6,8 +6,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { FilesManagementService } from '../../services/files-management.service';
 import { EditorsStateService } from '../../services/editors-state.service';
 import { LastInteractionService } from '../../services/last-interaction.service';
+import { BackendInteractionService } from '../../../core/services/backend-interaction.service';
 import { EditorPanelIndex, Disposable } from '../../../core/models/application-types.model';
-import { editor } from 'monaco-editor';
+import { editor, MarkerSeverity } from 'monaco-editor';
 import { Observable, Subscription } from 'rxjs';
 import { RobotFile } from '../../models/robot-file.class';
 
@@ -43,7 +44,14 @@ export class EditorPanelComponent implements AfterViewInit, OnDestroy {
   /** A `Subscription` to handle selected files changes. */
   private _selectedFileSubscription!: Subscription;
 
+  /** A disposable. */
   private _onFocus!: Disposable;
+
+  /** Used for linting delay. */
+  private _lintTimer: any;
+
+  /** Indicates changes. */
+  private _contentChangeListener: any;
 
   /**
    * Creates a new EditorPanelComponent instance.
@@ -54,11 +62,13 @@ export class EditorPanelComponent implements AfterViewInit, OnDestroy {
    * @param _filesManagementService - Handles files in the application.
    * @param _editorsStateService - Handles editors state.
    * @param _lastInteractionService - Tracks last interacted editor and file.
+   * @param _backendInteractionService - Handles backend interactions.
    */
   constructor(
     private _filesManagementService: FilesManagementService,
     private _editorsStateService: EditorsStateService,
-    private _lastInteractionService: LastInteractionService
+    private _lastInteractionService: LastInteractionService,
+    private _backendInteractionService: BackendInteractionService
   ) {
     this.openFiles$ = this._filesManagementService.openFiles$;
   }
@@ -76,6 +86,7 @@ export class EditorPanelComponent implements AfterViewInit, OnDestroy {
       .subscribe(selectedFile => {
         if (selectedFile) {
           this._editor.setModel(selectedFile.model);
+          this._setupLinting(selectedFile);
           if (this._lastInteractionService.lastInteractedEditor !== this._editor)
             this._lastInteractionService.setAsLastInteracted(this._editor)
         }
@@ -110,10 +121,62 @@ export class EditorPanelComponent implements AfterViewInit, OnDestroy {
   }
 
   /**
+   * Starts linting.
+   * 
+   * Performs an initial check then waits a little bit after typing to check.
+   * 
+   * @param file - File to lint.
+   */
+  private _setupLinting(file: RobotFile): void {
+    this._contentChangeListener?.dispose?.();
+    this._runLint(file);
+    this._contentChangeListener = file.model.onDidChangeContent(() => {
+      clearTimeout(this._lintTimer);
+      this._lintTimer = setTimeout(() => this._runLint(file), 400);
+    });
+  }
+
+  /**
+   * Runs lint and updates model markers.
+   * 
+   * @param file - File to lint.
+   */
+  private async _runLint(file: RobotFile): Promise<void> {
+    const message = await this._backendInteractionService.checkContent(
+      file.name,
+      file.model.getValue()
+    )
+    const markers = (message || []).map((m) => ({
+      message: m.message_description,
+      severity: this._mapSeverity(m.message_severity),
+      startLineNumber: m.line_number || 1,
+      startColumn: m.column_number || 1,
+      endLineNumber: m.line_number || 1,
+      endColumn: file.model.getLineMaxColumn(m.line_number),
+    }));
+    editor.setModelMarkers(file.model, 'robocop', markers);
+  }
+
+  /**
+   * Maps message severity with MarkerSeverity levels.
+   * 
+   * @param severity - Message severity.
+   * @returns Matching MarkerSeverity.
+   */
+  private _mapSeverity(severity: string): MarkerSeverity {
+    return severity === 'E' ? MarkerSeverity.Error
+          : severity === 'W' ? MarkerSeverity.Warning
+          : severity === 'I' ? MarkerSeverity.Info
+          : MarkerSeverity.Hint;
+  }
+
+  /**
    * Unsubscribes from the observable and disposes the editor on component termination.
    */
   public ngOnDestroy(): void {
     this._selectedFileSubscription.unsubscribe();
+    this._contentChangeListener?.dispose?.();
+    clearTimeout(this._lintTimer);
     this._onFocus?.dispose();
     this._editor.dispose();
   }
