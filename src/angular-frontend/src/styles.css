@@ -250,3 +250,10 @@ app-keywords-panel, app-resources-panel {
     min-width: unset;
     box-shadow: none;
 }
+
+.cdk-overlay-pane .panel-no-offset {
+    margin-top: 0!important;
+    left: auto !important;
+    width: auto !important;
+    min-width: 100% !important;
+}
