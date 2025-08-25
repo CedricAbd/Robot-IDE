@@ -74,7 +74,7 @@ export class ProjectPanelComponent {
     private _backendInteractionService: BackendInteractionService,
     private _filesManagementService: FilesManagementService
   ) {
-    this.projectName = this._gitlabStateService.projectPath
+    this.projectName = ''
     this._structureFetchingService.fetchedStructure$.pipe(takeUntilDestroyed()).subscribe(fetchedStructure => {
       this.projectTree = fetchedStructure
         .sort((a, b) => {
@@ -86,6 +86,7 @@ export class ProjectPanelComponent {
           level: node.path.split('/').length - 1
         }));
       this.dataSource.data = this.projectTree.filter(node => node.level === 0);
+      this.projectName = this._gitlabStateService.projectPath
     });
   }
   
