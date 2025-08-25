@@ -1,8 +1,8 @@
 <h2 class="panel-title">File structure</h2>
 <ng-container *ngIf="lastInteractedFile$ | async as activeFile">
-  <ng-container *ngIf="parsingResults$ | async as parsingResults">
-    <!-- File name -->
-    <div class="panel-items-count">{{ activeFile.name }}</div>
+  <!-- File name -->
+  <div class="panel-items-count">{{ activeFile.name }}</div>
+  <div class="structure-content" *ngIf="parsingResults$ | async as parsingResults">
     <!-- Imported resources -->
     <ng-container *ngIf="parsingResults.imported_resources.length">
       <div class="section">
@@ -91,5 +91,5 @@
         </li>
       </ul>
     </ng-container>
-  </ng-container>
+  </div>
 </ng-container>
