@@ -1,0 +1,19 @@
+<!-- Displays the editor panel only if at least one file is open. -->
+<ng-container *ngIf="(openFiles$ | async)?.length">
+    <!-- Renders the tabs bar with its selectable and closable tabs. -->
+    <mat-tab-group class="file-tabs" (selectedIndexChange)="selectTab($event)">
+        <mat-tab *ngFor="let file of (openFiles$ | async); let i = index">
+            <ng-template mat-tab-label>
+                {{ file.name }}
+                <button
+                    mat-icon-button
+                    (click)="close(i); $event.stopPropagation()"
+                >
+                    <mat-icon>{{ (file.isSaved$ | async) ? 'close' : 'cancel' }}</mat-icon>
+                </button>
+            </ng-template>
+        </mat-tab>
+    </mat-tab-group>
+    <!-- Renders the Monaco editor instance. -->
+    <div #editorContainer class="editor-container"></div>
+</ng-container>

@@ -1,0 +1,20 @@
+<!-- Renders the sidebar buttons container. -->
+<nav class="sidebar-buttons">
+    <!-- Renders the container buttons. -->
+    <button
+        *ngFor="let sidebarPanel of sidebarPanels"
+        mat-icon-button
+        class="sidebar-button"
+        [class.active]="currentPanel === sidebarPanel.component"
+        [matTooltip]="sidebarPanel.tooltip"
+        matTooltipPosition="right"
+        (click)="currentPanel = sidebarPanel.component"
+    >
+        <mat-icon>{{ sidebarPanel.icon }}</mat-icon>
+    </button>
+</nav>
+
+<!-- Renders the currently selected panel. -->
+<div class="sidebar-panel">
+    <ng-container *ngComponentOutlet="currentPanel"></ng-container>
+</div>

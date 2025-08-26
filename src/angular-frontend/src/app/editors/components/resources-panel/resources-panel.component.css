@@ -1,0 +1,13 @@
+.spinner-container {
+    flex: 0 0 70%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.panel-spinner {
+    stroke: var(--items-color) !important;
+    margin-bottom: 1rem;
+}

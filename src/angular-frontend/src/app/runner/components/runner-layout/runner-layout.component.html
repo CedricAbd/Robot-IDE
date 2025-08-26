@@ -1,0 +1,111 @@
+<!-- Displays the list of executable tests only if they are not loading. -->
+<div class="tests-list" *ngIf="!isLoading && !isRunning">
+    <div class="background">
+        <h2 class="panel-title">{{ projectPath }} executable tests</h2>
+        <div class="tools-panel">
+            <!-- Renders platform and site selectors. -->
+            <div class="tools-panel-left-area">
+                <!-- Renders platform selector. -->
+                <mat-form-field
+                    appearance="fill"
+                >
+                    <mat-select
+                        placeholder="Select platform..."
+                        [(ngModel)]="selectedPlatform"
+                        panelClass="panel-no-offset"
+                    >
+                        <mat-option
+                            *ngFor="let platform of platforms"
+                            [value]="platform"
+                        >
+                            {{ platform }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+                <!-- Renders site selector. -->
+                <mat-form-field
+                    appearance="fill"
+                >
+                    <mat-select
+                        placeholder="Select site..."
+                        [(ngModel)]="selectedSite"
+                        panelClass="panel-no-offset"
+                    >
+                        <mat-option
+                            *ngFor="let site of sites"
+                            [value]="site"
+                        >
+                            {{ site }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            <div class="tools-panel-right-area">
+                <!-- Displays a message regarding the last run results. -->
+                <span
+                    *ngIf="lastRunResult !== null"
+                    [ngClass]="{ 'success-message': lastRunResult, 'error-message': lastRunResult === false }"
+                >
+                    {{ lastRunResult ? 'Tests executed successfully' : 'Tests execution failed' }}
+                </span>
+                <!-- Renders the run tests button. -->
+                <button
+                    class="dialog-button"
+                    mat-raised-button
+                    (click)="runTests()"
+                    [disabled]="isLoading || !selectedTests.length || !selectedPlatform || selectedSite === null"
+                >
+                    Run tests
+                </button>
+            </div>
+        </div>
+        <div class="panel-bar-container">
+            <!-- Renders a text field to enable executable tests search. -->
+            <input
+                type="text"
+                class="panel-searchbar"
+                placeholder="Filter project's .robot tests..."
+                [formControl]="formControl"
+            >
+        </div>
+        <!-- Renders the select all button. -->
+        <mat-checkbox
+            (change)="toggleSelectAll($event.checked, list)"
+        >
+            Select all
+        </mat-checkbox>
+    </div>
+    <!-- Displays a message if no executable tests were found. -->
+    <p
+        class="panel-items-count"
+        *ngIf="!displayedTests.length"
+    >
+        No executable tests found for this specific branch!
+    </p>
+    <!-- Renders the executable tests list. -->
+    <mat-selection-list
+        #list
+        class="panel-list"
+        (selectionChange)="onSelectionChange(list.selectedOptions.selected)"
+    >
+        <mat-list-option
+            *ngFor="let test of displayedTests; let i = index"
+            checkboxPosition="before"
+            [value]="test"
+            [ngClass]="['panel-item', i % 2 === 0 ? 'panel-even-item' : 'panel-odd-item']"
+        >
+            <div class="panel-list-item-primary-label">{{ test.name }}</div>
+            <div class="panel-list-item-secondary-label">{{ test.path }}</div>
+        </mat-list-option>
+    </mat-selection-list>
+</div>
+<!-- Renders a spinner if executable tests are loading. -->
+<div class="spinner-container" *ngIf="isLoading">
+    <mat-spinner class="panel-spinner"></mat-spinner>
+    <p class="panel-items-count">Searching for executable .robot files...</p>
+</div>
+<!-- Renders a spinner if tests are running. -->
+<div class="spinner-container" *ngIf="!isLoading && isRunning">
+    <mat-spinner class="panel-spinner"></mat-spinner>
+    <p class="panel-items-count">Running selected test(s) in a GitLab pipeline...</p>
+</div>

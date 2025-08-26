@@ -1,0 +1,81 @@
+<h2 class="panel-title">Resources finder</h2>
+<!-- Displays the number of found Robot Framework. -->
+<div *ngIf="searchResults.length" class="panel-items-count">({{ displayedResults.length }}) Robot Framework files found</div>
+<!-- Renders a filtering searchbar to filter found Robot Framework files. -->
+<div *ngIf="searchResults.length" class="panel-bar-container">
+  <input
+    type="text"
+    class="panel-searchbar"
+    placeholder="Filter Robot Framework files by name..."
+    [(ngModel)]="filterText"
+    (ngModelChange)="filterResults()"
+  >
+</div>
+<!-- Displays the number of projects to scan. -->
+<div class="panel-items-count">({{ selectedProjects.length }}) projects selected</div>
+<!-- Renders the projects selector and the search button. -->
+<div class="panel-bar-container">
+  <mat-form-field
+    appearance="fill"
+  >
+    <mat-select
+        placeholder="Select projects..."
+        [(ngModel)]="selectedProjects"
+        multiple
+        panelClass="panel-no-offset"
+    >
+      <mat-option
+        *ngFor="let project of projectsToScan"
+        [value]="project"
+        [matTooltip]="project"
+        matTooltipPosition="right"
+      >
+        {{ project }}
+      </mat-option>
+    </mat-select>
+    <button
+      mat-icon-button
+      matSuffix
+      (mousedown)="$event.preventDefault()"
+      class="panel-bar-button"
+      matTooltip="Search for .robot and .resource files on selected GitLab projects..."
+      matTooltipPosition="right"
+      (click)="$event.stopPropagation(); searchForRobotFiles()"
+      [disabled] = "isSearching || !selectedProjects.length"
+    >
+      <mat-icon>search</mat-icon>
+    </button>
+  </mat-form-field>
+</div>
+
+<!-- Displays a spinner and an information message when searching. -->
+<div
+  *ngIf="isSearching"
+  class="spinner-container"
+>
+  <mat-spinner class="panel-spinner"></mat-spinner>
+  <div class="spinner-text">Searching for .robot and<br>.resource files...</div>
+</div> 
+
+<!-- Displays found Robot Framework files. -->
+<mat-list class="panel-list" *ngIf="displayedResults.length > 0">
+  <mat-list-item
+    *ngFor="let file of displayedResults; let i = index"
+    [ngClass]="['panel-item', i % 2 === 0 ? 'panel-even-item' : 'panel-odd-item']"
+    [matTooltip]="
+      'Name: ' + file.path.split('/').pop() + '&#10;' +
+      'Project: ' + file.project + '&#10;' +
+      'Branch: ' + file.branch + '&#10;' +
+      'Path: ' + file.path 
+    "
+    matTooltipPosition="right"
+    (dblclick)="openFile(file)"
+  >
+    <div class="panel-list-item-primary-label">
+      {{ file.path.split('/').pop() }}
+    </div>
+    <div class="panel-list-item-secondary-label">
+      Found in {{ file.project }} -> {{ file.branch }}
+    </div>
+  </mat-list-item>
+</mat-list>

@@ -1,0 +1,36 @@
+<h2 class="panel-title">Templates</h2>
+<!-- Renders found templates. -->
+<ng-container *ngIf="displayedTemplates$ | async as displayedTemplates">
+    <!-- Displays the number of found templates. -->
+    <div class="panel-items-count">({{ displayedTemplates.length }}) templates found</div>
+    <!-- Displays the templates filtering searchbar. -->
+    <div class="panel-bar-container">
+        <input
+            type="text"
+            [formControl]="formControl"
+            placeholder="Filter templates..."
+            class="panel-searchbar"
+        >
+    </div>
+    <!-- Lists filtered templates. -->
+    <mat-list class="panel-list">
+        <mat-list-item
+            *ngFor="let template of displayedTemplates; let i = index"
+            [ngClass]="['panel-item', i % 2 === 0 ? 'panel-even-item' : 'panel-odd-item']"
+            (dblclick)="insertTemplate(template)"
+        >
+            <div class="panel-list-item-primary-label">{{ template.name }}</div>
+            <div class="panel-list-item-secondary-label">New line: {{ template.new_line }}</div>
+            <!-- Displays the template deletion button. -->
+            <button
+                mat-icon-button
+                matListItemMeta
+                matTooltip="Delete template"
+                matTooltipPosition="right"
+                (click)="removeTemplate(template)"
+            >
+                <mat-icon>delete</mat-icon>
+            </button>
+        </mat-list-item>
+    </mat-list>
+</ng-container>

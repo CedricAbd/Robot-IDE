@@ -1,0 +1,95 @@
+<h2 class="panel-title">File structure</h2>
+<ng-container *ngIf="lastInteractedFile$ | async as activeFile">
+  <!-- File name -->
+  <div class="panel-items-count">{{ activeFile.name }}</div>
+  <div class="structure-content" *ngIf="parsingResults$ | async as parsingResults">
+    <!-- Imported resources -->
+    <ng-container *ngIf="parsingResults.imported_resources.length">
+      <div class="section">
+        <mat-icon>settings_application</mat-icon>
+        Imported resources:
+      </div>
+      <ul class="tree">
+        <li *ngFor="let resource of parsingResults.imported_resources">
+          {{ resource }}
+        </li>
+      </ul>
+    </ng-container>
+    <!-- Imported libraries -->
+    <ng-container *ngIf="parsingResults.imported_libraries.length">
+      <div class="section">
+        <mat-icon>library_books</mat-icon>
+        Imported libraries:
+      </div>
+      <ul class="tree">
+        <li *ngFor="let library of parsingResults.imported_libraries">
+          {{ library }}
+        </li>
+      </ul>
+    </ng-container>
+    <!-- Imported variables -->
+    <ng-container *ngIf="parsingResults.imported_variables.length">
+      <div class="section">
+        <mat-icon>attach_money</mat-icon>
+        Imported variables:
+      </div>
+      <ul class="tree">
+        <li *ngFor="let variable of parsingResults.imported_variables">
+          {{ variable }}
+        </li>
+      </ul>
+    </ng-container>
+    <!-- Created variables -->
+    <ng-container *ngIf="(parsingResults.created_variables | keyvalue).length">
+      <div class="section">
+        <mat-icon>code</mat-icon>
+        Created variables:
+      </div>
+      <ul class="tree">
+        <li *ngFor="let kv of parsingResults.created_variables | keyvalue">
+          {{ kv.key }} <= {{ kv.value }}
+        </li>
+      </ul>
+    </ng-container>
+    <!-- Created test cases -->
+    <ng-container *ngIf="parsingResults.created_test_cases.length">
+      <div class="section">
+        <mat-icon>assignment</mat-icon>
+        Created Test Cases:
+      </div>
+      <ul class="tree">
+        <li *ngFor="let testCase of parsingResults.created_test_cases">
+          {{ testCase.name }}
+          <ul>
+            <li *ngIf="testCase.tags?.length">
+              [Tags]: {{ testCase.tags.join(', ') }}
+            </li>
+            <li *ngIf="testCase.setup">
+              [Setup]: {{ testCase.setup }}
+            </li>
+            <li *ngIf="testCase.teardown">
+              [Teardown]: {{ testCase.teardown }}
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </ng-container>
+    <!-- Created keywords -->
+    <ng-container *ngIf="parsingResults.created_keywords.length">
+      <div class="section">
+        <mat-icon>bolt</mat-icon>
+        Created Keywords:
+      </div>
+      <ul class="tree">
+        <li *ngFor="let keyword of parsingResults.created_keywords">
+          {{ keyword.name }}
+          <ul>
+            <li *ngIf="keyword.arguments?.length">
+              [Args]: {{ keyword.arguments.join(', ') }}
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </ng-container>
+  </div>
+</ng-container>

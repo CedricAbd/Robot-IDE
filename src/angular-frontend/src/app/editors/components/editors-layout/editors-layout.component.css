@@ -1,0 +1,25 @@
+/* Editors layout. */
+.editors-layout {
+    height: calc(100% - 4rem);
+}
+
+.editor-panels {
+    display: grid;
+    height: 100%;
+}
+
+.editors-count-1 {
+    grid-template: 1fr / 1fr;
+}
+
+.editors-count-2 {
+    grid-template: 1fr / 1fr 1fr;
+}
+
+.editors-count-3, .editors-count-4 {
+    grid-template: 1fr 1fr / 1fr 1fr;
+}
+
+.editors-count-3 > .editor-panel:first-child {
+    grid-row: 1/3;
+}

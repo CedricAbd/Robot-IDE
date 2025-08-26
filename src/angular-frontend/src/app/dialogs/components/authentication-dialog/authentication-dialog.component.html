@@ -1,0 +1,47 @@
+<h2
+    align="center"
+>
+    GitLab authentication
+</h2>
+<mat-dialog-content>
+    <div class="dialog-field-container">
+        <!-- Renders a text field for GitLab's URL. -->
+        <input
+            type="text"
+            class="dialog-field"
+            [(ngModel)]="gitlabUrl"
+            placeholder="Enter GitLab's URL..."
+        >
+        <!-- Renders a text field for user's private token. -->
+        <input
+            type="password"
+            class="dialog-field"
+            [(ngModel)]="privateToken"
+            placeholder="Enter your GitLab private token..."
+        >
+        <!-- Renders a text field for GitLab's project path. -->
+        <input
+            type="text"
+            class="dialog-field"
+            [(ngModel)]="projectPath"
+            placeholder="Enter desired GitLab project path..."
+        >
+    </div>
+    <!-- Displays an error message on authentication failure. -->
+    <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+    </div>
+    <mat-dialog-actions
+        align="center"
+    >
+        <!-- Renders the authentication button. -->
+        <button
+            mat-button
+            class="dialog-button"
+            (click)="onAuthenticate()"
+            [disabled]="!gitlabUrl.trim() || !privateToken.trim() || !projectPath.trim()"
+        >
+            Authenticate
+        </button>
+    </mat-dialog-actions>
+</mat-dialog-content>
