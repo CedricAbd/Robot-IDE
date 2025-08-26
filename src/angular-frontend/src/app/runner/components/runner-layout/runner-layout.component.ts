@@ -1,6 +1,8 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule, FormControl } from '@angular/forms';
+import { ReactiveFormsModule, FormControl, FormsModule } from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
+import { MatButtonModule } from '@angular/material/button';
 import { MatListModule } from '@angular/material/list';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -19,6 +21,9 @@ import { ExecutableTest } from '../../../core/models/application-types.model';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    FormsModule,
+    MatSelectModule,
+    MatButtonModule,
     MatListModule,
     MatCheckboxModule,
     MatProgressSpinnerModule,
@@ -30,11 +35,14 @@ export class RunnerLayoutComponent implements OnInit, OnDestroy {
   /** Aggregates component subscriptions. */
   private _subscriptions = new Subscription();
 
-  /** Indicates if the search filters on tags. */
-  public isTagsSearch: boolean = false;
-
   /** Captures user's search. */
   public readonly formControl = new FormControl<string>('');
+
+  /** Stores platforms that can be targeted. */
+  public platforms: string[] = ["platform1", "platform2"];
+
+  /** Stores sites that can be targeted. */
+  public sites: number[] = [1, 2];
 
   /** Stores all executable tests retrieved from the backend. */
   private _allTests: ExecutableTest[] = [];
@@ -42,11 +50,23 @@ export class RunnerLayoutComponent implements OnInit, OnDestroy {
   /** Indicates if tests are being reloaded. */
   public isLoading: boolean = true;
 
+  /** Indicates if tests are running. */
+  public isRunning: boolean = false;
+
+  /** Indicates if previous execution succeeded. */
+  public lastRunResult: boolean | null = null;
+
   /** Represents tests displayed after filtering. */
   public displayedTests: ExecutableTest[] = [];
 
+  /** Represents the platform selected by the user. */
+  public selectedPlatform: string | null = null;
+
+  /** Represents the site selected by the user. */
+  public selectedSite: number | null = null;
+
   /** Represents tests selected by the user. */
-  public _selectedTests: ExecutableTest[] = [];
+  public selectedTests: ExecutableTest[] = [];
 
   /**
    * Creates a RunnerLayoutComponent instance.
@@ -66,7 +86,7 @@ export class RunnerLayoutComponent implements OnInit, OnDestroy {
    * 
    * Loads executable tests on commit changes and refreshes
    * the filtered view. On search changes, refilters displayed
-   * tests by tags or by name depending on the boolean value.
+   * tests by name.
    */
   public ngOnInit(): void {
     const mainSub = combineLatest([
@@ -76,11 +96,13 @@ export class RunnerLayoutComponent implements OnInit, OnDestroy {
       if (isAuthenticated && projectPath) {
         const filterTests = (search: string | null) => {
           const query = (search ?? '').toLowerCase();
+          if (!query) {
+            this.displayedTests = [...this._allTests];
+            return;
+          }
           this.displayedTests = this._nodesFilteringService.filterList(
             this._allTests,
-            test => this.isTagsSearch
-              ? test.tags.some(tag => tag.toLowerCase().includes(query))
-              : test.name.toLowerCase().includes(query)
+            test => test.name.toLowerCase().includes(query)
           );
         };
         this._subscriptions.add(
@@ -103,6 +125,15 @@ export class RunnerLayoutComponent implements OnInit, OnDestroy {
   }
 
   /**
+   * Gets project path from _gitlabStateService.
+   * 
+   * @returns Project path as a string.
+   */
+  get projectPath(): string {
+    return this._gitlabStateService.projectPath;
+  }
+
+  /**
    * Toggles selection of all executable tests in the list.
    * 
    * Also updates _selectedTests to reflect UI state.
@@ -111,8 +142,8 @@ export class RunnerLayoutComponent implements OnInit, OnDestroy {
    * @param list - Selection list.
    */
   public toggleSelectAll(checked: boolean, list: any): void {
-  checked ? list.selectAll() : list.deselectAll();
-  this._selectedTests = list.selectedOptions.selected.map((option: any) => option.value);
+    checked ? list.selectAll() : list.deselectAll();
+    this.selectedTests = list.selectedOptions.selected.map((option: any) => option.value);
   }
 
   /**
@@ -121,8 +152,23 @@ export class RunnerLayoutComponent implements OnInit, OnDestroy {
    * @param selected - Selected options from the list.
    */
   public onSelectionChange(selected: any[]): void {
-    this._selectedTests = selected.map(option => option.value);
-    console.log(this._selectedTests);
+    this.selectedTests = selected.map(option => option.value);
+  }
+
+  /**
+   * Runs selected tests in a GitLab pipeline. 
+   */
+  public async runTests(): Promise<void> {
+    this.isRunning = true;
+    this.lastRunResult = null;
+    const testsPaths = this.selectedTests.map(test => test.path);
+    const value = await this._backendInteractionService.runTests(
+      this.selectedPlatform!,
+      this.selectedSite!,
+      testsPaths
+    )
+    this.lastRunResult = value ? true : false
+    this.isRunning = false;
   }
 
   /**
