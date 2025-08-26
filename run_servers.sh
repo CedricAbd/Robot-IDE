@@ -30,20 +30,24 @@ cd "$BACKEND_DIR"
 pip install -r requirements.txt
 cd - >/dev/null
 
-# ------------------------------------
-# 2) Angular dependencies installation
-# ------------------------------------
+# ----------------------------------------------
+# 2) Angular dependencies installation if needed
+# ----------------------------------------------
 
-echo "2) Installing Angular dependencies..."
+echo "2) Installing Angular dependencies if needed..."
 cd "$FRONTEND_DIR"
-npm ci
+if [[ ! -d "node_modules" ]]; then
+    npm ci
+fi
 
-# ---------------------------
-# 3) Angular production build
-# ---------------------------
+# -------------------------------------
+# 3) Angular production build if needed
+# -------------------------------------
 
-echo "3) Building the Angular frontend..."
-npx ng build
+echo "3) Building the Angular frontend if needed..."
+if [[ ! -d "dist/angular-frontend/browser" ]]; then
+    npx ng build
+fi
 cd - >/dev/null
 
 # --------------------
