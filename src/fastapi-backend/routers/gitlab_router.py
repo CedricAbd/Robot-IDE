@@ -17,7 +17,8 @@ from models.gitlab_models import (
     GetProjectStructureRequest,
     GetRepositoryRobotFilesRequest,
     PushFileRequest,
-    GetExecutableTestsRequest
+    GetExecutableTestsRequest,
+    RunTestsRequest
 )
 
 gitlab_router = APIRouter()
@@ -282,3 +283,32 @@ async def get_executable_tests(request: GetExecutableTestsRequest) -> list:
     except GenericError as ge:
         logger.error(ge)
         raise HTTPException(status_code=500)
+
+@gitlab_router.post("/run_tests", tags=["GitLab routes"], status_code=200)
+async def run_tests(request: RunTestsRequest) -> bool:
+    """
+    Asynchronously run tests in a GitLab pipeline.
+
+    Args:
+        request (RunTestsRequest): Parameters as an object.
+
+    Returns:
+        bool: true if pipeline succeeded, false otherwise.
+
+    Raises:
+        HTTPException: 401 error if authentication fails,
+    """
+    try:
+        return await to_thread(
+            gitlab_functions.run_tests,
+            request.gitlab_url,
+            request.private_token,
+            request.project_path,
+            request.branch_name,
+            request.platform,
+            request.site,
+            request.tests
+        )
+    except GitlabAuthenticationError as gae:
+        logger.error(gae)
+        raise HTTPException(status_code=401)

@@ -431,3 +431,29 @@ async def get_executable_tests(gitlab_url: str, private_token: str, project_path
         raise GenericError(
             f"gitlab_functions.get_executable_tests: {type(e).__name__} -> {e}"
         )
+
+def run_tests(
+    gitlab_url: str,
+    private_token: str,
+    project_path: str,
+    branch_name: str,
+    platform: str,
+    site: int,
+    tests: list
+) -> bool:
+    """
+    Run tests in a GitLab pipeline.
+
+    Args:
+        gitlab_url (str): GitLab repository URL.
+        private_token (str): GitLab private token.
+        project_path (str): GitLab project path.
+        branch_name (str): GitLab branch name.
+        platform (str): Target platform.
+        site (int): Target site.
+        tests (list): Tests to run.
+
+    Raises:
+        GitlabAuthenticationError: If authentication fails.
+    """
+    pass

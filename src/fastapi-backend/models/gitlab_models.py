@@ -80,3 +80,15 @@ class GetExecutableTestsRequest(BaseModel):
     private_token: str = Field(..., description="GitLab private token.")
     project_path: str = Field(..., description="GitLab project path.")
     branch_name: str = Field(..., description="GitLab branch name.")
+
+class RunTestsRequest(BaseModel):
+    """
+    Request model to run tests in a GitLab pipeline.
+    """
+    gitlab_url: str = Field(..., description="GitLab repository URL.")
+    private_token: str = Field(..., description="GitLab private token.")
+    project_path: str = Field(..., description="GitLab project path.")
+    branch_name: str = Field(..., description="GitLab branch name.")
+    platform: str = Field(..., description="Target platform.")
+    site: int = Field(..., description="Target site.")
+    tests: list = Field(..., description="Tests to run.")
