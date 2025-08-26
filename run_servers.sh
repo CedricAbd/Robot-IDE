@@ -63,7 +63,7 @@ npx serve -s dist/angular-frontend/browser -l 4200 & FRONTEND_PID=$!
 cd - >/dev/null
 
 echo
-echo Servers are up !
+echo "Servers are up !"
 echo
 echo "FastAPI backend -> http://localhost:8000"
 echo "SwaggerUI backend -> http://localhost:8000/docs"
