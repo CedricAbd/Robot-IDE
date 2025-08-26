@@ -383,4 +383,28 @@ export class BackendInteractionService {
       file_content: fileContent
     });
   }
+
+  /**
+   * Runs a pipeline in GitLab to run specified tests.
+   * 
+   * @param platform - Target platform.
+   * @param site - Target site.
+   * @param tests - Tests to run.
+   * @returns true if pipeline succeeded, false otherwise.
+   */
+  public async runTests(platform: string, site: number, tests: string[]): Promise<boolean> {
+    try {
+      return await this.post<boolean>('/run_tests', {
+        gitlab_url: this._gitlabStateService.gitlabUrl,
+        private_token: this._gitlabStateService.privateToken,
+        project_path: this._gitlabStateService.projectPath,
+        branch_name: this._gitlabStateService.branchName,
+        platform: platform,
+        site: site,
+        tests: tests
+      });
+    } catch {
+      return false;
+    }
+  }
 }
