@@ -42,6 +42,9 @@ def read_templates(file_path: str) -> list:
             templates = load(file)
             validate_templates(templates)
             return templates
+    except FileNotFoundError:
+        write_templates(file_path, [])
+        return []
     except Exception as e:
         raise GenericError(
             f"file_system_functions.read_templates: {type(e).__name__} -> {e}"
