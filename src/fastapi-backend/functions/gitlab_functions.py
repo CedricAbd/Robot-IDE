@@ -456,4 +456,4 @@ def run_tests(
     Raises:
         GitlabAuthenticationError: If authentication fails.
     """
-    pass
+    return True
